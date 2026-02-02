@@ -169,3 +169,174 @@ export default function ModernComponent() {
     },
   };
 }
+
+export async function* mockWeatherWidgetStream() {
+  // Text introduction
+  const textChunks = [
+    "I've ",
+    "created ",
+    "an ",
+    "interactive ",
+    "weather ",
+    "widget ",
+    "for ",
+    "you. ",
+    "It ",
+    "displays ",
+    "current ",
+    "temperature, ",
+    "conditions, ",
+    "and ",
+    "a ",
+    "5-day ",
+    "forecast ",
+    "with ",
+    "smooth ",
+    "animations.",
+  ];
+
+  for (const chunk of textChunks) {
+    yield {
+      type: "text-delta" as const,
+      textDelta: chunk,
+    };
+  }
+
+  // Add the weather widget artifact
+  yield {
+    type: "artifact" as const,
+    artifact: {
+      id: "weather-artifact",
+      type: "code",
+      language: "jsx",
+      title: "Interactive Weather Widget",
+      content: `'use client';
+
+import React, { useState } from 'react';
+import { Cloud, CloudRain, Sun, Wind, Droplets, Eye, Gauge } from 'lucide-react';
+
+export default function WeatherWidget() {
+  const [unit, setUnit] = useState('F');
+
+  const currentWeather = {
+    location: 'San Francisco, CA',
+    temperature: 72,
+    condition: 'Partly Cloudy',
+    humidity: 65,
+    windSpeed: 12,
+    visibility: 10,
+    pressure: 1013,
+    feelsLike: 70,
+    uv: 5,
+    icon: 'cloud',
+  };
+
+  const forecast = [
+    { day: 'Mon', high: 75, low: 62, condition: 'Sunny', icon: 'sun' },
+    { day: 'Tue', high: 73, low: 61, condition: 'Cloudy', icon: 'cloud' },
+    { day: 'Wed', high: 68, low: 58, condition: 'Rainy', icon: 'rain' },
+    { day: 'Thu', high: 70, low: 60, condition: 'Sunny', icon: 'sun' },
+    { day: 'Fri', high: 76, low: 63, condition: 'Clear', icon: 'sun' },
+  ];
+
+  const getIcon = (iconType) => {
+    const iconClass = 'w-8 h-8';
+    switch (iconType) {
+      case 'sun':
+        return <Sun className={iconClass + ' text-yellow-400'} />;
+      case 'cloud':
+        return <Cloud className={iconClass + ' text-gray-400'} />;
+      case 'rain':
+        return <CloudRain className={iconClass + ' text-blue-400'} />;
+      default:
+        return <Cloud className={iconClass} />;
+    }
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto p-4 bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600 rounded-2xl shadow-2xl text-white">
+      {/* Header with temperature toggle */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-3xl font-bold">{currentWeather.location}</h2>
+          <p className="text-blue-100 text-sm">Last updated: Just now</p>
+        </div>
+        <button
+          onClick={() => setUnit(unit === 'F' ? 'C' : 'F')}
+          className="bg-blue-300 bg-opacity-30 hover:bg-opacity-50 px-4 py-2 rounded-lg transition"
+        >
+          °{unit}
+        </button>
+      </div>
+
+      {/* Main temperature display */}
+      <div className="mb-8">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="text-7xl font-bold">{currentWeather.temperature}°</div>
+          <div>{getIcon(currentWeather.icon)}</div>
+        </div>
+        <p className="text-2xl text-blue-100 mb-2">{currentWeather.condition}</p>
+        <p className="text-blue-100">Feels like {currentWeather.feelsLike}°</p>
+      </div>
+
+      {/* Weather details grid */}
+      <div className="grid grid-cols-2 gap-3 mb-8">
+        <div className="bg-blue-400 bg-opacity-30 backdrop-blur-sm rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Droplets className="w-5 h-5" />
+            <span className="text-sm text-blue-100">Humidity</span>
+          </div>
+          <p className="text-2xl font-bold">{currentWeather.humidity}%</p>
+        </div>
+
+        <div className="bg-blue-400 bg-opacity-30 backdrop-blur-sm rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Wind className="w-5 h-5" />
+            <span className="text-sm text-blue-100">Wind Speed</span>
+          </div>
+          <p className="text-2xl font-bold">{currentWeather.windSpeed} mph</p>
+        </div>
+
+        <div className="bg-blue-400 bg-opacity-30 backdrop-blur-sm rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Eye className="w-5 h-5" />
+            <span className="text-sm text-blue-100">Visibility</span>
+          </div>
+          <p className="text-2xl font-bold">{currentWeather.visibility} mi</p>
+        </div>
+
+        <div className="bg-blue-400 bg-opacity-30 backdrop-blur-sm rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Gauge className="w-5 h-5" />
+            <span className="text-sm text-blue-100">Pressure</span>
+          </div>
+          <p className="text-2xl font-bold">{currentWeather.pressure} mb</p>
+        </div>
+      </div>
+
+      {/* 5-Day Forecast */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">5-Day Forecast</h3>
+        <div className="grid grid-cols-5 gap-2">
+          {forecast.map((day, idx) => (
+            <div
+              key={idx}
+              className="bg-blue-400 bg-opacity-30 backdrop-blur-sm rounded-lg p-3 text-center hover:bg-opacity-50 transition"
+            >
+              <p className="font-semibold text-sm mb-2">{day.day}</p>
+              <div className="flex justify-center mb-2">{getIcon(day.icon)}</div>
+              <p className="text-xs text-blue-100 mb-2">{day.condition}</p>
+              <div className="flex justify-center gap-2 text-sm">
+                <span className="font-bold">{day.high}°</span>
+                <span className="text-blue-200">{day.low}°</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}`,
+    },
+  };
+}

@@ -1,5 +1,5 @@
 import { ChatTransport } from "ai";
-import { mockChatStream } from "./mock-data";
+import { mockChatStream, mockWeatherWidgetStream } from "./mock-data";
 
 export class MockChatTransport implements ChatTransport {
   async makeRequest(request: {
@@ -14,8 +14,26 @@ export class MockChatTransport implements ChatTransport {
         // Simulate a small delay for realism
         await new Promise((resolve) => setTimeout(resolve, 300));
 
+        // Get the last user message to determine which mock to use
+        const lastMessage = request.messages[request.messages.length - 1];
+        const userContent =
+          typeof lastMessage?.content === "string"
+            ? lastMessage.content.toLowerCase()
+            : "";
+
+        // Choose the appropriate mock stream
+        const isWeatherQuery =
+          userContent.includes("weather") ||
+          userContent.includes("forecast") ||
+          userContent.includes("temperature") ||
+          userContent.includes("climate");
+
+        const streamGenerator = isWeatherQuery
+          ? mockWeatherWidgetStream()
+          : mockChatStream();
+
         // Stream mock response chunks
-        for await (const chunk of mockChatStream()) {
+        for await (const chunk of streamGenerator) {
           if (chunk.type === "text-delta") {
             // Send text delta in the format expected by AI SDK
             const line = `0:${JSON.stringify(["text-delta", chunk.textDelta])}\n`;

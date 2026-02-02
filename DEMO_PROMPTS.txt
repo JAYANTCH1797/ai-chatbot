@@ -1,0 +1,56 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    MOCK UI DEMO PROMPTS - Try These!
+═══════════════════════════════════════════════════════════════════════════════
+
+🌤️  WEATHER WIDGET DEMO (Triggers Interactive Weather Component)
+───────────────────────────────────────────────────────────────────────────────
+Simply type any of these in the chat:
+
+  ✓ "Create a weather widget"
+  ✓ "Build a weather dashboard"
+  ✓ "Show me a forecast component"
+  ✓ "Create a temperature display"
+  ✓ "Build a weather app"
+
+Or anything containing: weather, forecast, temperature, climate
+
+
+💻 DEFAULT DEMO (Triggers React Component Example)
+───────────────────────────────────────────────────────────────────────────────
+Try these to see the default mock response:
+
+  ✓ "Create a React component"
+  ✓ "Build a beautiful UI"
+  ✓ "Make a landing page"
+  ✓ "Create a todo app"
+  ✓ "Build a dashboard"
+
+
+🎯 FULL FEATURE SHOWCASE
+───────────────────────────────────────────────────────────────────────────────
+1. Start a new chat (click new chat button)
+2. Ask: "Create a weather widget"
+3. Watch the response stream in real-time
+4. See the interactive artifact render
+5. Try other prompts to see different responses
+
+
+📝 WHAT TO EXPECT
+───────────────────────────────────────────────────────────────────────────────
+✓ Real-time streaming text response
+✓ Artifact rendering with syntax highlighting
+✓ Fully interactive React component
+✓ No lag or loading issues
+✓ Smooth animations and transitions
+✓ Responsive design that works on all screens
+
+
+🚀 GETTING STARTED
+───────────────────────────────────────────────────────────────────────────────
+1. Run: npm run dev
+2. Open: http://localhost:3000
+3. Try any prompt above
+4. See the mock data and components in action!
+
+
+═══════════════════════════════════════════════════════════════════════════════
