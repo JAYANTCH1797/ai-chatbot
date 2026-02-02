@@ -1,37 +1,12 @@
-import { auth } from "@/app/(auth)/auth";
-import { getSuggestionsByDocumentId } from "@/lib/db/queries";
-import { ChatSDKError } from "@/lib/errors";
+import { mockSuggestions } from "@/lib/mock-data";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const documentId = searchParams.get("documentId");
 
   if (!documentId) {
-    return new ChatSDKError(
-      "bad_request:api",
-      "Parameter documentId is required."
-    ).toResponse();
+    return Response.json({ error: "Parameter documentId is required." }, { status: 400 });
   }
 
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatSDKError("unauthorized:suggestions").toResponse();
-  }
-
-  const suggestions = await getSuggestionsByDocumentId({
-    documentId,
-  });
-
-  const [suggestion] = suggestions;
-
-  if (!suggestion) {
-    return Response.json([], { status: 200 });
-  }
-
-  if (suggestion.userId !== session.user.id) {
-    return new ChatSDKError("forbidden:api").toResponse();
-  }
-
-  return Response.json(suggestions, { status: 200 });
+  return Response.json(mockSuggestions, { status: 200 });
 }

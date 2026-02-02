@@ -1,10 +1,15 @@
-import { cookies } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DataStreamProvider } from "@/components/data-stream-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { auth } from "../(auth)/auth";
+
+const mockUser = {
+  id: "mock-user-1",
+  email: "demo@example.com",
+  name: "Demo User",
+  image: null,
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,12 +28,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 
 async function SidebarWrapper({ children }: { children: React.ReactNode }) {
-  const [session, cookieStore] = await Promise.all([auth(), cookies()]);
-  const isCollapsed = cookieStore.get("sidebar_state")?.value !== "true";
+  const isCollapsed = false;
 
   return (
     <SidebarProvider defaultOpen={!isCollapsed}>
-      <AppSidebar user={session?.user} />
+      <AppSidebar user={mockUser} />
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );
